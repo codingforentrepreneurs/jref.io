@@ -1,5 +1,9 @@
-import {neon} from '@neondatabase/serverless'
+import {drizzle} from 'drizzle-orm/neon-http'
+import {neon, neonConfig} from '@neondatabase/serverless'
+import { LinksTable } from './schema';
 const sql = neon(process.env.DATABASE_URL)
+neonConfig.fetchConnectionCache = true;
+const db = drizzle(sql)
 
 // console.log(sql`SELECT NOW()`)
 
@@ -21,3 +25,9 @@ async function configureDatabase() {
 }
 
 configureDatabase().catch(err=>console.log("db config err", err))
+
+
+export async function addLink(url) {
+    const newLink = {url: url}
+    return await db.insert(LinksTable).values(newLink).returning()
+}
