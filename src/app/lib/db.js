@@ -2,6 +2,7 @@ import {drizzle} from 'drizzle-orm/neon-http'
 import {neon, neonConfig} from '@neondatabase/serverless'
 import { LinksTable } from './schema';
 import { desc } from 'drizzle-orm';
+import randomShortStrings from './randomShortStrings';
 const sql = neon(process.env.DATABASE_URL)
 neonConfig.fetchConnectionCache = true;
 const db = drizzle(sql)
@@ -29,7 +30,8 @@ configureDatabase().catch(err=>console.log("db config err", err))
 
 
 export async function addLink(url) {
-    const newLink = {url: url}
+    const short = randomShortStrings()
+    const newLink = {url: url, short:short}
     return await db.insert(LinksTable).values(newLink).returning()
 }
 
