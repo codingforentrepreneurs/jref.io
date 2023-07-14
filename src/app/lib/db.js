@@ -25,6 +25,18 @@ async function configureDatabase() {
         "created_at" timestamp DEFAULT now()
     );` 
     await sql`CREATE UNIQUE INDEX IF NOT EXISTS "url_idx" ON "links" ((LOWER(url)));`
+
+    await sql`CREATE TABLE IF NOT EXISTS "visits" (
+        "id" serial PRIMARY KEY NOT NULL,
+        "link_id" integer NOT NULL,
+        "created_at" timestamp DEFAULT now()
+    );`
+    await sql`
+    DO $$ BEGIN
+     ALTER TABLE "visits" ADD CONSTRAINT "visits_link_id_links_id_fk" FOREIGN KEY ("link_id") REFERENCES "links"("id") ON DELETE no action ON UPDATE no action;
+    EXCEPTION
+     WHEN duplicate_object THEN null;
+    END $$;`
 }
 
 configureDatabase().catch(err=>console.log("db config err", err))
