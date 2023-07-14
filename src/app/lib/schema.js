@@ -28,7 +28,7 @@ export const VisitsTable = pgTable("visits", {
 // visits --> visit -> one link
 export const VisitsTableRelations = relations(VisitsTable, ({many, one})=>({
     link: one(LinksTable, {
-        fields: [VisitsTable.linksId],
+        fields: [VisitsTable.linkId],
         references: [LinksTable.id]
     })
 }))

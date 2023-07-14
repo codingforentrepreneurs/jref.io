@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server'
 
 import isValidURL from '@/app/lib/isValidURL'
-import {getMinLinks} from '@/app/lib/db'
+import {getMinLinksAndVisits} from '@/app/lib/db'
 import {addLink} from "@/app/lib/db"
 
 export async function GET(request) {
-    const links = await getMinLinks(100, 0)
+    const links = await getMinLinksAndVisits(100, 0)
     return NextResponse.json(links, {status: 200})
 }
 
