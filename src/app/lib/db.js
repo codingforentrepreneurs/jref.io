@@ -20,21 +20,34 @@ export async function helloWorld() {
 }
 
 async function configureDatabase() {
-    const dbResponse = await sql`CREATE TABLE IF NOT EXISTS "links" (
+    sql`CREATE TABLE IF NOT EXISTS "links" (
         "id" serial PRIMARY KEY NOT NULL,
         "url" text NOT NULL,
         "short" varchar(50),
+        "user_id" integer,
         "created_at" timestamp DEFAULT now()
-    );` 
-    await sql`CREATE UNIQUE INDEX IF NOT EXISTS "url_idx" ON "links" ((LOWER(url)));`
-
-    await sql`CREATE TABLE IF NOT EXISTS "visits" (
+    );`
+    sql`CREATE TABLE IF NOT EXISTS "users" (
+        "id" serial PRIMARY KEY NOT NULL,
+        "username" varchar(50) NOT NULL,
+        "email" text,
+        "created_at" timestamp DEFAULT now()
+    );`
+    sql`CREATE TABLE IF NOT EXISTS "visits" (
         "id" serial PRIMARY KEY NOT NULL,
         "link_id" integer NOT NULL,
         "created_at" timestamp DEFAULT now()
     );`
-    await sql`
-    DO $$ BEGIN
+
+    sql`CREATE UNIQUE INDEX IF NOT EXISTS "username_idx" ON "users" ("username");`
+    
+    sql`DO $$ BEGIN
+     ALTER TABLE "links" ADD CONSTRAINT "links_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
+    EXCEPTION
+     WHEN duplicate_object THEN null;
+    END $$;`
+
+    sql`DO $$ BEGIN
      ALTER TABLE "visits" ADD CONSTRAINT "visits_link_id_links_id_fk" FOREIGN KEY ("link_id") REFERENCES "links"("id") ON DELETE no action ON UPDATE no action;
     EXCEPTION
      WHEN duplicate_object THEN null;
@@ -46,14 +59,19 @@ configureDatabase().catch(err=>console.log("db config err", err))
 
 export async function addLink(url) {
     const short = randomShortStrings()
-
+    const user = await getSessionUser()
     const newLink = {url: url, short:short}
+    if (user) {
+        newLink["userId"] = user
+    }
+    console.log(newLink)
     let response= [{message: `${url} is not valid. Please try again`}]
     let responseStatus = 400
     try {
         response = await db.insert(LinksTable).values(newLink).returning()
         responseStatus = 201
     } catch ({name, message}) {
+        console.log(name, message)
         if (`${message}`.includes("duplicate key value violates unique constraint")) {
             response =[{message: `${url} is has already been added.`}]
         }
@@ -101,6 +119,7 @@ export async function getMinLinksAndVisits(limit, offset) {
             url: true,
             short: true,
             createdAt: true,
+            userId: true,
         },
         with: {
             visits: {
