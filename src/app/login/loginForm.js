@@ -10,7 +10,7 @@ export default function LoginForm ({didSubmit}) {
         const formData = new FormData(event.target)
         const data = Object.fromEntries(formData)
         const JSONData = JSON.stringify(data)
-        const endpoint = "/api/auth/register/"
+        const endpoint = "/api/auth/login/"
         const options = {
             method: "POST",
             headers: {
@@ -19,7 +19,9 @@ export default function LoginForm ({didSubmit}) {
             body: JSONData
         }
         const response = await fetch(endpoint, options)
-
+        if (response.status === 200) {
+            window.location.href="/"
+        }
         const result = await response.json()
 
         setResults(result)

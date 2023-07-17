@@ -113,6 +113,10 @@ export async function registerUser(newUserData) {
     return {data: response, status: responseStatus}
 }
 
+export async function getUserByUsername(username) {
+    return await db.select().from(UsersTable).where(eq(UsersTable.username, username))
+}
+
 export async function getLinks(limit, offset) {
     const lookupLimit = limit ? limit : 10
     const lookupOffset = offset ? offset : 0
@@ -140,6 +144,7 @@ export async function getMinLinks(limit, offset) {
 export async function getMinLinksAndVisits(limit, offset) {
     const lookupLimit = limit ? limit : 10
     const lookupOffset = offset ? offset : 0
+    const sessionUser = await getSessionUser()
     // return await db.select({
     //     id: LinksTable.id,
     //     url: LinksTable.url,
