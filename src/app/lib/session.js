@@ -1,7 +1,8 @@
 import * as jose from "jose"
 import {cookies} from 'next/headers'
 
-const secret = jose.base64url.decode(process.env.JOSE_SESSION_KEY)
+// const secret = jose.base64url.decode(process.env.JOSE_SESSION_KEY)
+const secret = new TextEncoder().encode(process.env.JOSE_SESSION_KEY)
 const issuer = 'urn:jrefio:issuer'
 const audience = 'urn:jrefio:audience'
 const expiresAt = '10s'
