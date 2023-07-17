@@ -5,7 +5,7 @@ import { uniqueIndex, timestamp, text, pgTable, serial, varchar, integer} from '
 export const UsersTable = pgTable("users", {
     id: serial('id').primaryKey().notNull(),
     username: varchar("username", {length: 50}).notNull(),
-    password: varchar("password", {length: 75}).notNull(), // never store raw data -> hash password using Salt
+    password: text("password").notNull(), // never store raw data -> hash password using Salt
     email: text("email"), 
     createdAt: timestamp("created_at").defaultNow()
 }, (users)=>{

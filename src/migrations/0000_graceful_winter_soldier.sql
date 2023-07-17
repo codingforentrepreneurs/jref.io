@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS "links" (
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"username" varchar(50) NOT NULL,
+	"password" text NOT NULL,
 	"email" text,
 	"created_at" timestamp DEFAULT now()
 );

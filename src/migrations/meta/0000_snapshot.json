@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "94d640b7-7a18-4eeb-9e3e-68e2dca88893",
+  "id": "558a3a30-abc5-407e-95a0-a719d3c32744",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "links": {
@@ -72,6 +72,12 @@
         "username": {
           "name": "username",
           "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
