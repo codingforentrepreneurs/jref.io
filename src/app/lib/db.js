@@ -4,6 +4,7 @@ import { LinksTable, VisitsTable } from './schema';
 import { desc, eq, sql as sqld } from 'drizzle-orm';
 import randomShortStrings from './randomShortStrings';
 import * as schema from './schema'
+import { getSessionUser } from './session';
 const sql = neon(process.env.DATABASE_URL)
 neonConfig.fetchConnectionCache = true;
 const db = drizzle(sql, {schema})
@@ -45,6 +46,7 @@ configureDatabase().catch(err=>console.log("db config err", err))
 
 export async function addLink(url) {
     const short = randomShortStrings()
+
     const newLink = {url: url, short:short}
     let response= [{message: `${url} is not valid. Please try again`}]
     let responseStatus = 400

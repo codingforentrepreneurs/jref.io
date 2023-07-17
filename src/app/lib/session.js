@@ -1,4 +1,5 @@
 import * as jose from "jose"
+import {cookies} from 'next/headers'
 
 const secret = jose.base64url.decode(process.env.JOSE_SESSION_KEY)
 const issuer = 'urn:jrefio:issuer'
@@ -40,3 +41,22 @@ export const decodeUserSession = async (jwt) => {
 // }
 
 // verifySession().then(x=>console.log("verify")).catch(err=>console.log(err))
+
+
+export const setSessionUser = async (userId) => {
+    const newSessionValue = await encodeUserSession(userId)
+    // call in routes.js
+    cookies().set("session_id", newSessionValue)
+}
+
+export const getSessionUser = async () => {
+    const cookieSessionValue = cookies().get("session_id").value
+    if (!cookieSessionValue) {
+        return null
+    }
+    const extractedUserId = await decodeUserSession(cookieSessionValue)
+    if (!extractedUserId) {
+        return null
+    }
+    return extractedUserId
+}

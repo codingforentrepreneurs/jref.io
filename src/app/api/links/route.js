@@ -4,7 +4,10 @@ import isValidURL from '@/app/lib/isValidURL'
 import {getMinLinksAndVisits} from '@/app/lib/db'
 import {addLink} from "@/app/lib/db"
 
+import { setSessionUser } from '@/app/lib/session'
+
 export async function GET(request) {
+    await setSessionUser(1)
     const links = await getMinLinksAndVisits(100, 0)
     return NextResponse.json(links, {status: 200})
 }
