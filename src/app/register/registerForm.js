@@ -5,9 +5,6 @@ import {useState} from 'react'
 export default function RegisterForm ({didSubmit}) {
     const [results, setResults] = useState(null)
 
-    // const verifyPassword = (event) => {
-    //     console.log(event.target.value)
-    // }
 
     const handleForm = async (event) => {
         event.preventDefault()
@@ -22,9 +19,7 @@ export default function RegisterForm ({didSubmit}) {
             },
             body: JSONData
         }
-        console.log(options)
         const response = await fetch(endpoint, options)
-        console.log(response)
         const result = await response.json()
 
         setResults(result)

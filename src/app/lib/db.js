@@ -10,7 +10,6 @@ const sql = neon(process.env.DATABASE_URL)
 neonConfig.fetchConnectionCache = true;
 const db = drizzle(sql, {schema})
 
-// console.log(sql`SELECT NOW()`)
 
 export async function helloWorld() {
     const start = new Date()
@@ -66,14 +65,12 @@ export async function addLink(url) {
     if (user) {
         newLink["userId"] = user
     }
-    console.log(newLink)
     let response= [{message: `${url} is not valid. Please try again`}]
     let responseStatus = 400
     try {
         response = await db.insert(LinksTable).values(newLink).returning()
         responseStatus = 201
     } catch ({name, message}) {
-        console.log(name, message)
         if (`${message}`.includes("duplicate key value violates unique constraint")) {
             response =[{message: `${url} is has already been added.`}]
         }
@@ -97,7 +94,6 @@ export async function registerUser(newUserData) {
     try {
         let dbResponse = await db.insert(UsersTable).values(toInsertData).returning()
         let dbResponseData = dbResponse[0]
-        console.log(dbResponseData)
         response = [{
             id: dbResponseData.id,
             username: dbResponseData.username,
@@ -105,7 +101,6 @@ export async function registerUser(newUserData) {
         }]
         responseStatus = 201
     } catch ({name, message}) {
-        console.log(name, message)
         if (`${message}`.includes("duplicate key value violates unique constraint")) {
             response =[{message: `${username} is taken.`}]
         }
