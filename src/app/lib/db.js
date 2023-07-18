@@ -83,7 +83,7 @@ export async function registerUser(newUserData) {
     const {username} = newUserData
     const toInsertData = {
         username: username,
-        password: hashPassword(newUserData.password)
+        password: await hashPassword(newUserData.password)
     }
     if (newUserData.email) {
         toInsertData['email'] = newUserData.email
