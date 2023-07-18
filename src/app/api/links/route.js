@@ -4,6 +4,8 @@ import isValidURL from '@/app/lib/isValidURL'
 import {getMinLinksAndVisits} from '@/app/lib/db'
 import {addLink} from "@/app/lib/db"
 
+export const runtime = "edge"
+
 export async function GET(request) {
     const links = await getMinLinksAndVisits(100, 0)
     return NextResponse.json(links, {status: 200})
