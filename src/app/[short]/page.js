@@ -2,6 +2,7 @@ import {notFound, redirect} from 'next/navigation'
 import {getShortLinkRecord} from "@/app/lib/db"
 import getDomain from '../lib/getDomain'
 
+export const runtime = "edge"
 
 async function triggerVisit (linkId) {
     const options = {
@@ -30,9 +31,18 @@ export default async function ShortPage({params}) {
     if (!url) {
         notFound()
     }
+    let msg;
     if (id) {
-        await triggerVisit(id)
+        try {
+            await triggerVisit(id)
+        } catch ({name, message}) {
+            msg=message
+        }
+        
     }
-    return <h1>{url}</h1>
+    return <div>
+            <h1>>{url}</h1>
+        {msg && msg}
+        </div>
     // redirect(url, "push")
 }
