@@ -40,10 +40,10 @@ export default async function ShortPage({params}) {
         }
         
     }
-    redirect(url, "push")
-    
-    return <div>
-            <h1>{url}</h1>
+    // redirect(url, "push")
+
+    return <div className='text-center my-5'>
+            <h1>Redirect to: {url}</h1>
         {msg && msg}
         </div>
     
