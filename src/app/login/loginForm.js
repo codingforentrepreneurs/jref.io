@@ -1,9 +1,11 @@
 'use client'
 
 import {useState} from 'react'
+import { Alert } from 'flowbite-react';
 
 export default function LoginForm ({didSubmit}) {
     const [results, setResults] = useState(null)
+    const [message, setMessage] = useState(null)
 
     const handleForm = async (event) => {
         event.preventDefault()
@@ -28,9 +30,13 @@ export default function LoginForm ({didSubmit}) {
         if (didSubmit) {
             didSubmit(result)
         }
+        if (result.message) {
+            setMessage(result.message)
+        }
     }
 
     return <>
+        {message && <Alert color="warning">{message}</Alert>}
         <form onSubmit={handleForm}>
             <input type="text" name="username" placeholder="Your username"/>
 
@@ -39,9 +45,8 @@ export default function LoginForm ({didSubmit}) {
 
          
 
-            <button type="submit">Login</button>
+            <button className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300" type="submit">Login</button>
 
         </form>
-        {results && JSON.stringify(results)}
     </>
 }
