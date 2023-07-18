@@ -1,7 +1,7 @@
 'use client'
 
 import {useState} from 'react'
-import { Alert } from 'flowbite-react';
+import { Alert, Button, Label, TextInput } from 'flowbite-react';
 export default function RegisterForm ({didSubmit}) {
     const [results, setResults] = useState(null)
     const [message, setMessage] = useState(null)
@@ -21,8 +21,8 @@ export default function RegisterForm ({didSubmit}) {
             body: JSONData
         }
         const response = await fetch(endpoint, options)
+        console.log(response)
         const result = await response.json()
-        console.log(result)
         setResults(result)
 
         if (didSubmit) {
@@ -31,22 +31,85 @@ export default function RegisterForm ({didSubmit}) {
         if (result.message) {
             setMessage(result.message)
         }
+        if (response.status === 201) {
+            window.location.href = "/login"
+        }
     }
 
     return <>
         {message && <Alert color="warning">{message}</Alert>}
-        <form onSubmit={handleForm}>
-            <input type="text" name="username" placeholder="Pick a username"/>
 
-            <input type="email" name="email" placeholder="Your email"/>
+        <form className="flex max-w-md flex-col gap-4" onSubmit={handleForm}>
 
-            <input type="password" name="password" placeholder="Your password"/>
+        <div>
+            <div className="mb-2 block">
+                
+                <Label
+                    htmlFor="username"
+                    value="Pick a username"
+                />
+                </div>
+                <TextInput
+                id="username"
+                placeholder="your username"
+                required
+                name='username'
+                type="text"
+                />
+            </div>
 
-            <input type="password" name="passwordConfirm" placeholder="Confirm your password"/>
+            <div>
+            <div className="mb-2 block">
+                
+                <Label
+                    htmlFor="email"
+                    value="Your Email"
+                />
+                </div>
+                <TextInput
+                id="email"
+                placeholder="Your email"
+                required
+                name='email'
+                type="email"
+                />
+            </div>
+        <div>
+            <div className="mb-2 block">
+                <Label
+                    htmlFor="password"
+                    value="Your password"
+                />
+                </div>
+                <TextInput
+                id="password"
+                placeholder='*******'
+                required
+                name='password'
+                type="password"
+                />
+            </div>
+        <div>
+            <div className="mb-2 block">
+                <Label
+                    htmlFor="password2"
+                    value="Confirm your password"
+                />
+                </div>
+                <TextInput
+                id="password2"
+                placeholder='*******'
+                required
+                name='passwordConfirm'
+                type="password"
+                />
+        </div>
+        
+        <Button type="submit">Register</Button>
 
-            <button type="submit">Register</button>
 
-        </form>
+
+            </form>
         
     </>
 }

@@ -1,9 +1,13 @@
 'use client'
 
 import {useState} from 'react'
+import { Alert, Button, Label, TextInput } from 'flowbite-react';
+
+
 
 export default function LinksCreateForm ({didSubmit}) {
     const [results, setResults] = useState(null)
+    const [message, setMessage] = useState(null)
 
     const handleForm = async (event) => {
         event.preventDefault()
@@ -26,14 +30,34 @@ export default function LinksCreateForm ({didSubmit}) {
         if (didSubmit) {
             didSubmit(result)
         }
+        if (result.message) {
+            setMessage(result.message)
+        }
     }
 
     return <>
-        <form onSubmit={handleForm}>
-            <input type="text" defaultValue="https://github.com/codingforentrepreneurs/jref.io" name="url" placeholder="Your url to shorten"/>
-            <button type="submit">Shorten</button>
+        {message && <Alert color="warning">{message}</Alert>}
+         <form className="flex max-w-md flex-col gap-4" onSubmit={handleForm}>
+
+         <div>
+            <div className="mb-2 block">
+            <Label
+                htmlFor="url"
+                value="Enter a link to shorten"
+            />
+            </div>
+            <TextInput
+            id="url"
+            placeholder="Your url to shorten"
+            required
+            name="url"
+            type="text"
+            />
+        </div>
+        <Button type="submit">
+            Shorten
+        </Button>
 
         </form>
-        {results && JSON.stringify(results)}
     </>
 }

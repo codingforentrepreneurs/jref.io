@@ -151,6 +151,7 @@ export async function getMinLinksAndVisits(limit, offset) {
         offset: lookupOffset,
         orderBy: [desc(LinksTable.createdAt)],
         columns: {
+            id: true,
             url: true,
             short: true,
             createdAt: true,
