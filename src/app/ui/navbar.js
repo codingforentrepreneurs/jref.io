@@ -11,13 +11,13 @@ export function NavbarForAnon() {
         rounded
       >
         <Navbar.Brand href="/">
-          <Image alt="Flowbite React Logo"
+          <Image alt="Jref.io Log"
             className="mr-3 h-6 sm:h-9"
             width={40}
             height={40}
             src="/favicon.ico" />
           <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            Flowbite React
+            jref.io
           </span>
         </Navbar.Brand>
         
@@ -53,19 +53,19 @@ export default function NavbarForUser() {
       rounded
     >
       <Navbar.Brand href="/">
-        <Image alt="Flowbite React Logo"
+        <Image alt="jref.io Logo"
           className="mr-3 h-6 sm:h-9"
           width={40}
           height={40}
           src="/favicon.ico" />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          Flowbite React
+          jref.io
         </span>
       </Navbar.Brand>
       <div className="flex md:order-2">
         <Dropdown
           inline
-          label={<Image alt="Flowbite React Logo"
+          label={<Image alt="jref.io Logo"
           className="mr-3 w-3 h-3 sm:w-4 sm:h-4 rounded"
           width={40}
           height={40}
