@@ -40,9 +40,11 @@ export default async function ShortPage({params}) {
         }
         
     }
+    redirect(url, "push")
+    
     return <div>
             <h1>{url}</h1>
         {msg && msg}
         </div>
-    // redirect(url, "push")
+    
 }
